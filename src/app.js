@@ -6,6 +6,13 @@ const button = $('#button')
 
 const buttonStream$ = Rx.Observable.fromEvent(button, 'click')
 
-buttonStream$.subscribe(function(x){
-    console.log('clicked')
-})
+buttonStream$.subscribe(
+    function(x){
+        console.log('clicked')
+    },
+    function(err){
+        console.log(err)
+    }, 
+    function(){
+        console.log('completed')
+    })

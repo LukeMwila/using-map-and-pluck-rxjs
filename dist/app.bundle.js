@@ -87,6 +87,10 @@ var buttonStream$ = _Rx2.default.Observable.fromEvent(button, 'click');
 
 buttonStream$.subscribe(function (x) {
     console.log('clicked');
+}, function (err) {
+    console.log(err);
+}, function () {
+    console.log('completed');
 });
 
 /***/ }),
