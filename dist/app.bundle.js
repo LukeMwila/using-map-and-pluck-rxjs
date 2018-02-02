@@ -82,15 +82,31 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var input = (0, _jquery2.default)('#input');
 var button = (0, _jquery2.default)('#button');
+var coords = (0, _jquery2.default)('#coords');
 
 var buttonStream$ = _Rx2.default.Observable.fromEvent(button, 'click');
 
 buttonStream$.subscribe(function (x) {
     console.log('clicked');
+    console.log(x);
 }, function (err) {
     console.log(err);
 }, function () {
     console.log('completed');
+});
+
+var inputStream$ = _Rx2.default.Observable.fromEvent(input, 'keyup');
+
+inputStream$.subscribe(function (x) {
+    console.log(x.target.value);
+}, function (err) {
+    console.log(err);
+}, function (complete) {
+    console.log('Completed');
+});
+
+var mouseMove$ = _Rx2.default.Observable.fromEvent(document, 'mousemove').subscribe(function (x) {
+    coords.html('X: ' + x.clientX + ', Y: ' + x.clientY);
 });
 
 /***/ }),
