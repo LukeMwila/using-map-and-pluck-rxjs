@@ -82,49 +82,15 @@ var _getSubscriber = __webpack_require__(458);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/*
-const nums = [33, 45, 23, 12, 72, 4, 5]
+var source$ = new _Rx2.default.Observable(function (observer) {
+    console.log('creating observable...');
 
-// Observable form an array
-const nums$ = Rx.Observable.from(nums)
+    observer.next('A value');
 
-nums$.subscribe(getSubscriber('nums'))
+    observer.complete();
+});
 
-// Observable from an array of objects
-const users = [
-    {name: 'John Doe', email: 'jdoe@mail.com'},
-    {name: 'Sam Smith', email: 'ssmith@mail.com'},
-    {name: 'Jen Thompson', email: 'jthompson@mail.com'},
-]
-
-const users$ = Rx.Observable.from(users)
-
-users$.subscribe(getSubscriber('users'))
-
-// Observable from Set
-
-const set = new Set(['Foo', 43, {name: 'Jeff'}])
-
-const set$ = Rx.Observable.from(set)
-
-set$.subscribe(getSubscriber('set'))
-
-// Observable from Map
-
-const m = new Map([[1,2], [3,4], [5,6]])
-
-const m$ = Rx.Observable.from(m)
-
-m$.subscribe(getSubscriber('map'))
-
-*/
-
-// Observable from String
-
-var str = 'Hello World';
-var str$ = _Rx2.default.Observable.from(str);
-
-str$.subscribe((0, _getSubscriber.getSubscriber)('str'));
+source$.subscribe((0, _getSubscriber.getSubscriber)('myobs'));
 
 /***/ }),
 /* 1 */
