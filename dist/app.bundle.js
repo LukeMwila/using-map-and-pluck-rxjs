@@ -83,35 +83,52 @@ var _getSubscriber = __webpack_require__(458);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * // OPERATORS
- * 
- * Interval takes in a duration and starts to emit ascending intergers based on the duration
+ * Creating observables from a Promise:
+ * A Promise is an object used fo asynchronours computations. It can represent a value that can be available now or later on.
+ */
 
-const source$ = Rx.Observable.interval(2000)
-                            .take(10)
-                            .subscribe(getSubscriber('interval'))
-// timer: Interval with a delay
-const source$ = Rx.Observable.timer(3000, 1000)
-                            .take(10)
-                            .subscribe(getSubscriber('timer'))
+/*
+ // Promise
+ const myPromise = new Promise((resolve, reject) => {
+     console.log('creating promise')
+     setTimeout(() => {
+         console.log('Something')
+         resolve('Hello From Promise!')
+     }, 2000)
+ })
 
-// range: There is no timer, it just emits a range of values
-const source$ = Rx.Observable.range(0, 10).subscribe(getSubscriber('range'))
+ //Without observable
+ myPromise.then(x => {
+     console.log(x)
+ })
 
-// of
-const source$ = Rx.Observable.of(45, 'Hello', [2,3,4,5,6]).subscribe(getSubscriber('of'))
-
+Rx.Observable.fromPromise(myPromise)
+        .subscribe(getSubscriber('promise'))
 */
+var input = (0, _jquery2.default)('#input');
+var profile = (0, _jquery2.default)('#profile');
+profile.hide();
 
-var i = 0;
-var source$ = _Rx2.default.Observable.defer(function () {
-                            i++;
-                            return _Rx2.default.Observable.of(i);
+_Rx2.default.Observable.fromEvent(input, 'keyup').subscribe(function (e) {
+    profile.show();
+    _Rx2.default.Observable.fromPromise(getGithubUser(e.target.value)).subscribe(function (user) {
+        (0, _jquery2.default)('#name').text(user.data.name);
+        (0, _jquery2.default)('#login').text(user.data.login);
+        (0, _jquery2.default)('#blog').text(user.data.blog);
+        (0, _jquery2.default)('#avatar').attr('src', user.data.avatar_url);
+        (0, _jquery2.default)('#repos').text(user.data.public_repos);
+        (0, _jquery2.default)('#followers').text(user.data.followers);
+        (0, _jquery2.default)('#following').text(user.data.following);
+        (0, _jquery2.default)('#link').attr('href', user.data.html_url);
+    });
 });
 
-source$.subscribe((0, _getSubscriber.getSubscriber)('one'));
-source$.subscribe((0, _getSubscriber.getSubscriber)('two'));
-source$.subscribe((0, _getSubscriber.getSubscriber)('three'));
+function getGithubUser(username) {
+    return _jquery2.default.ajax({
+        url: 'https://api.github.com/users/' + username + '?client_id=86a138f40fd040248d41&client_secret=264f88af2f74c92ea39ed23398137758e3001cec',
+        dataType: 'jsonp'
+    }).promise();
+}
 
 /***/ }),
 /* 1 */

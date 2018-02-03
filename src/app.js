@@ -3,32 +3,51 @@ import Rx from 'rxjs/Rx'
 import { getSubscriber } from './utils/getSubscriber'
 
 /**
- * // OPERATORS
- * 
- * Interval takes in a duration and starts to emit ascending intergers based on the duration
+ * Creating observables from a Promise:
+ * A Promise is an object used fo asynchronours computations. It can represent a value that can be available now or later on.
+ */
 
-const source$ = Rx.Observable.interval(2000)
-                            .take(10)
-                            .subscribe(getSubscriber('interval'))
-// timer: Interval with a delay
-const source$ = Rx.Observable.timer(3000, 1000)
-                            .take(10)
-                            .subscribe(getSubscriber('timer'))
+/*
+ // Promise
+ const myPromise = new Promise((resolve, reject) => {
+     console.log('creating promise')
+     setTimeout(() => {
+         console.log('Something')
+         resolve('Hello From Promise!')
+     }, 2000)
+ })
 
-// range: There is no timer, it just emits a range of values
-const source$ = Rx.Observable.range(0, 10).subscribe(getSubscriber('range'))
+ //Without observable
+ myPromise.then(x => {
+     console.log(x)
+ })
 
-// of
-const source$ = Rx.Observable.of(45, 'Hello', [2,3,4,5,6]).subscribe(getSubscriber('of'))
-
+Rx.Observable.fromPromise(myPromise)
+        .subscribe(getSubscriber('promise'))
 */
+let input = $('#input')
+let profile = $('#profile')
+profile.hide()
 
-let i = 0
-const source$ = Rx.Observable.defer(function(){
-    i++
-    return Rx.Observable.of(i)
-})
+Rx.Observable.fromEvent(input, 'keyup')
+            .subscribe(e => {
+                profile.show()
+                Rx.Observable.fromPromise(getGithubUser(e.target.value))
+                  .subscribe(user => {
+                    $('#name').text(user.data.name)
+                    $('#login').text(user.data.login)
+                    $('#blog').text(user.data.blog)
+                    $('#avatar').attr('src', user.data.avatar_url)
+                    $('#repos').text(user.data.public_repos)
+                    $('#followers').text(user.data.followers)
+                    $('#following').text(user.data.following)
+                    $('#link').attr('href', user.data.html_url)
+                  })
+            })
 
-source$.subscribe(getSubscriber('one'))
-source$.subscribe(getSubscriber('two'))
-source$.subscribe(getSubscriber('three'))
+function getGithubUser(username){
+    return $.ajax({
+        url: 'https://api.github.com/users/'+ username +'?client_id=86a138f40fd040248d41&client_secret=264f88af2f74c92ea39ed23398137758e3001cec',
+        dataType: 'jsonp'
+    }).promise()
+}
