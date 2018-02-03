@@ -27,6 +27,8 @@ Rx.Observable.fromPromise(myPromise)
 */
 let input = $('#input')
 let profile = $('#profile')
+let client_id = ''
+let client_secret = ''
 profile.hide()
 
 Rx.Observable.fromEvent(input, 'keyup')
@@ -47,7 +49,7 @@ Rx.Observable.fromEvent(input, 'keyup')
 
 function getGithubUser(username){
     return $.ajax({
-        url: 'https://api.github.com/users/'+ username +'?client_id=86a138f40fd040248d41&client_secret=264f88af2f74c92ea39ed23398137758e3001cec',
+        url: 'https://api.github.com/users/'+ username +'?client_id='`${client_id}`'&client_secret='`${client_secret}`,
         dataType: 'jsonp'
     }).promise()
 }
