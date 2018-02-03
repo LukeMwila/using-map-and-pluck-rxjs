@@ -2,39 +2,33 @@ import $ from 'jquery'
 import Rx from 'rxjs/Rx'
 import { getSubscriber } from './utils/getSubscriber'
 
-/*
-    A cold observable is also known as a passive observable, this means the underlying producer is created and activated during the subscription.
-    The producer is the source of the stream of values for the observable. So that could be a DOM event, an iterator or a web socket. Anything you're
-    using to get from observer.next()
-    So when you subscribe, you actually activate it. 
-    An example of a cold observable would be if we set up a request to an API to bring in an array. 
+/**
+ * // OPERATORS
+ * 
+ * Interval takes in a duration and starts to emit ascending intergers based on the duration
 
-    A hot (or active) observable is always activated and running even outside of that observable. A good example of a hot observable is mousemove events, these are always
-    happening whether you subscribe to it or not. If we want to subscribe to that stream, we just tap into it and we can see the values of that stream.
-    To turn a cold observable into a hot observable we make use of the publish() function. That makes it a connectable observable, so we have to connect to it to obtain the values from the stream.
+const source$ = Rx.Observable.interval(2000)
+                            .take(10)
+                            .subscribe(getSubscriber('interval'))
+// timer: Interval with a delay
+const source$ = Rx.Observable.timer(3000, 1000)
+                            .take(10)
+                            .subscribe(getSubscriber('timer'))
+
+// range: There is no timer, it just emits a range of values
+const source$ = Rx.Observable.range(0, 10).subscribe(getSubscriber('range'))
+
+// of
+const source$ = Rx.Observable.of(45, 'Hello', [2,3,4,5,6]).subscribe(getSubscriber('of'))
+
 */
 
-/*
-const source$ = Rx.Observable.create(observer => {
-    observer.next(Date.now())
-}).publish()
+let i = 0
+const source$ = Rx.Observable.defer(function(){
+    i++
+    return Rx.Observable.of(i)
+})
 
 source$.subscribe(getSubscriber('one'))
 source$.subscribe(getSubscriber('two'))
-
-source$.connect()
-
-*/
-
-const source$ = Rx.Observable
-                    .interval(1000)
-                    .publish()
-
-source$.connect()
-
-setTimeout(() => {
-    source$.subscribe(getSubscriber('one'))
-    setTimeout(() => {
-        source$.subscribe(getSubscriber('two'))
-    }, 4000)
-},2000)
+source$.subscribe(getSubscriber('three'))
